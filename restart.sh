@@ -4,6 +4,8 @@ pkill -f "uvicorn" 2>/dev/null
 
 echo "🔄 Iniciando servidor FastAPI..."
 
+cd app || { echo "❌ Não foi possível entrar na pasta 'app'."; exit 1; }
+
 echo "📂 Entrando na pasta $PWD"
 
 echo "🚀 Iniciando o servidor FastAPI..."
