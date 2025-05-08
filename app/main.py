@@ -7,7 +7,7 @@ app = FastAPI()
 
 @app.get("/")
 async def root():
-    return {"message": "Server is Ok funciona Sera HOJE MESMO? Acho que não!"}
+    return {"message": "Server is Ok funciona Sera HOJE MESMO? Acho que não mesmo!"}
 
 @app.post("/webhook")
 async def webhook(request: Request):
