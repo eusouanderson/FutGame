@@ -9,22 +9,18 @@ class WebhookHandler(BaseHTTPRequestHandler):
             print("✅ Webhook recebido. Executando git pull...")
 
             try:
-                # Atualiza o repositório
+
                 output = subprocess.check_output(['git', '-C', './app', 'pull'], stderr=subprocess.STDOUT)
                 print("📦 Git pull output:\n", output.decode())
 
-                # Reinicia o servidor (procura pelo processo do uvicorn)
                 print("♻️ Reiniciando o servidor FastAPI...")
 
-                # Encontra o PID do processo uvicorn e termina ele
                 result = subprocess.check_output(["pgrep", "-f", "uvicorn"])
                 for pid in result.decode().split():
                     os.kill(int(pid), signal.SIGTERM)
 
-                # Inicia o servidor novamente (ajuste se você usa systemd ou supervisord)
                 subprocess.Popen(["poetry", "run", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"], cwd="./app")
 
-                # Resposta de sucesso
                 self.send_response(200)
                 self.end_headers()
                 self.wfile.write(b'Success and restarted')
@@ -45,7 +41,7 @@ class WebhookHandler(BaseHTTPRequestHandler):
             self.end_headers()
 
     def log_message(self, format, *args):
-        return  # Evita log no terminal
+        return
 
 if __name__ == "__main__":
     server_address = ('', 3000)
