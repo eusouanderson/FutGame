@@ -46,5 +46,5 @@ class WebhookHandler(BaseHTTPRequestHandler):
 if __name__ == "__main__":
     server_address = ('', 3000)
     httpd = HTTPServer(server_address, WebhookHandler)
-    print("📡 Webhook escutando na porta 3000!....")
+    print("📡 Webhook escutando na porta 3000!!....")
     httpd.serve_forever()
