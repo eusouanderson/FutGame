@@ -21,9 +21,6 @@ sleep 2
 
 cd ..
 
-echo "Iniciando webhook listener na porta 3000...."
-poetry run python3 webhook.py &
-
 sleep 2
 
 echo "Iniciando o ngrok..."
