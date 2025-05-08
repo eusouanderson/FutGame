@@ -21,7 +21,7 @@ async def webhook(request: Request):
 
         subprocess.Popen(["poetry", "run", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"], cwd="./app")
 
-        return Response(content="Success and restarted", status_code=200)
+        return Response(content="Success and restarted!", status_code=200)
 
     except subprocess.CalledProcessError as e:
         print("❌ Erro ao atualizar ou reiniciar:\n", e.output.decode())
