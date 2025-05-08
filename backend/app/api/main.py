@@ -38,8 +38,6 @@ async def root():
 async def webhook(request: Request, background_tasks: BackgroundTasks):
     print("✅ Webhook recebido. Iniciando atualização...")
 
-    # Enfileira o deploy em background
     background_tasks.add_task(run_deploy)
 
-    # Responde imediatamente ao GitHub
     return Response(content="Deploy agendado", status_code=202)
