@@ -1,13 +1,15 @@
 #!/bin/bash
 
-# Matar processo existente do uvicorn (se houver)
-PID=$(ps aux | grep 'uvicorn' | grep -v 'grep' | awk '{print $2}')
-if [ ! -z "$PID" ]; then
-  echo "Parando servidor FastAPI com PID $PID..."
-  kill -9 $PID
-fi
+# Parar servidor existente (se desejar)
+pkill -f "uvicorn" 2>/dev/null
 
-# Iniciar o servidor novamente usando poetry
 echo "Iniciando servidor FastAPI..."
-poetry run uvicorn app.main:app --host 0.0.0.0 --port 8000 > server.log 2>&1 &
+
+# Entrar na pasta app e iniciar o servidor com poetry
+cd app || exit
+echo "Entrando na pasta $APP_DIR"
+
+echor "Iniciando o servidor FastAPI..."
+poetry run uvicorn main:app --host 0.0.0.0 --port 8000 > ../server.log 2>&1 &
+
 echo "Servidor iniciado. Verifique server.log para detalhes."
