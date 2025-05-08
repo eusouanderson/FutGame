@@ -19,8 +19,18 @@ async def webhook(request: Request):
 
         print("♻️ Reiniciando o servidor FastAPI com o script de reinício...")
 
+        # Definindo o caminho absoluto do script restart.sh
+        restart_script_path = os.path.join(os.getcwd(), 'restart.sh')
+
+        # Verificando se o script existe
+        if not os.path.exists(restart_script_path):
+            return Response(content="Erro: O script 'restart.sh' não foi encontrado.", status_code=500)
+
+        # Garantindo que o script tenha permissões de execução
+        os.chmod(restart_script_path, 0o755)
+
         # Chama o script restart.sh para reiniciar o servidor
-        subprocess.Popen(['bash', 'restart.sh'], cwd=os.getcwd())
+        subprocess.Popen(['bash', restart_script_path], cwd=os.getcwd())
 
         return Response(content="Success and restarted!", status_code=200)
 
