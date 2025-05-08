@@ -16,7 +16,8 @@ async def webhook(request: Request):
     print("✅ Webhook recebido. Executando git pull...")
 
     try:
-        output = subprocess.check_output(['git', '-C', './app', 'pull'], stderr=subprocess.STDOUT)
+        output = subprocess.check_output(['git', '-C', os.getcwd(), 'pull'], stderr=subprocess.STDOUT)
+
         print("📦 Git pull output:\n", output.decode())
 
         print("♻️ Reiniciando o servidor FastAPI...")
@@ -25,7 +26,11 @@ async def webhook(request: Request):
         for pid in result.decode().split():
             os.kill(int(pid), signal.SIGTERM)
 
-        subprocess.Popen(["poetry", "run", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"], cwd="./app")
+        subprocess.Popen(
+    ["poetry", "run", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"],
+    cwd="."  # ou simplesmente remova o argumento cwd
+)
+
 
         return Response(content="Success and restarted!", status_code=200)
 
