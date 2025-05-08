@@ -14,17 +14,14 @@ async def webhook(request: Request):
     print("✅ Webhook recebido. Executando git pull...")
 
     try:
-        # Executando o comando git pull
         output = subprocess.check_output(['git', '-C', os.getcwd(), 'pull'], stderr=subprocess.STDOUT)
         print("📦 Git pull output:\n", output.decode())
 
-        # Espera de 3 segundos para garantir que as alterações foram aplicadas
         print("⏳ Aguardando para garantir que as alterações sejam aplicadas...")
-        time.sleep(3)  # Pode ajustar o tempo conforme necessário
+        time.sleep(3)
 
         print("♻️ Reiniciando o servidor FastAPI com o script de reinício...")
 
-        # Chama o script restart.sh para reiniciar o servidor
         result = subprocess.run(['bash', 'restart.sh'], cwd=os.getcwd(), text=True, capture_output=True)
 
         if result.returncode != 0:
