@@ -22,7 +22,7 @@ async def webhook(request: Request):
 
         print("♻️ Reiniciando o servidor FastAPI com o script de reinício...")
 
-        result = subprocess.run(['bash', 'restart.sh'], cwd=os.getcwd(), text=True, capture_output=True)
+        result = subprocess.run(['bash', '../restart.sh'], cwd=os.getcwd(), text=True, capture_output=True)
 
         if result.returncode != 0:
             print(f"❌ Erro ao reiniciar servidor. Código de erro: {result.returncode}")
