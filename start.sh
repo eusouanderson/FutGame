@@ -1,25 +1,34 @@
 #!/bin/bash
 
 
-APP_DIR="./app"
+BACKEND_DIR="./backend/app/api"
+FRONTEND_DIR="./frontend/fut-game"
 
-echo "Entrando na pasta $APP_DIR"
-cd "$APP_DIR" || exit
+echo "Entrando na pasta $BACKEND_DIR"
+cd "$BACKEND_DIR" || exit
 
 echo "Encerrando processos antigos..."
 
+
 fuser -k 8000/tcp
 fuser -k 3000/tcp
+
 
 pkill -f webhook.py
 pkill ngrok
 
 echo "Iniciando o servidor FastAPI..."
-poetry run uvicorn main:app --host 0.0.0.0 --port 8000 &
+poetry run uvicorn app.api.main:app --host 0.0.0.0 --port 8000 &
 
 sleep 2
 
-cd ..
+cd ../..
+
+sleep 2
+
+echo "Iniciando o servidor Vue.js..."
+cd "$FRONTEND_DIR" || exit
+npm run serve &
 
 sleep 2
 
