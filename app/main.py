@@ -5,8 +5,9 @@ import signal
 
 app = FastAPI()
 
-@app.post("/")
+@app.post("/webhook")
 async def webhook(request: Request):
+
     print("✅ Webhook recebido. Executando git pull...")
 
     try:
