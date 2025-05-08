@@ -5,6 +5,11 @@ import signal
 
 app = FastAPI()
 
+@app.get("/")
+async def root():
+    return {"message": "Server is running!"}
+
+
 @app.post("/webhook")
 async def webhook(request: Request):
 
