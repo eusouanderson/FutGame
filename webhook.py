@@ -3,25 +3,20 @@ import subprocess
 
 class WebhookHandler(BaseHTTPRequestHandler):
     def do_POST(self):
-        self.send_response(200)
-        self.end_headers()
-        self.wfile.write(b'Atualizando projeto FutGame...')
-
-        print("🚀 Recebido push do GitHub! Executando git pull...")
-
-        try:
-            result = subprocess.run(
-                ["git", "-C", "./app", "pull", "origin", "main"],
-                capture_output=True,
-                text=True,
-                check=True
-            )
-            print("✅ Atualização concluída:\n", result.stdout)
-        except subprocess.CalledProcessError as e:
-            print("❌ Erro ao atualizar o repositório:\n", e.stderr)
-
-    def log_message(self, format, *args):
-        return  # Oculta logs padrão do HTTPServer
+        if self.path == '/':  # aceita POST em "/"
+            print("🚀 Recebido push do GitHub! Atualizando código...")
+            try:
+                output = subprocess.check_output(['git', '-C', './app', 'pull', 'origin', 'main'], stderr=subprocess.STDOUT)
+                print("✅ Atualização feita com sucesso:\n", output.decode())
+            except subprocess.CalledProcessError as e:
+                print("❌ Erro ao executar git pull:\n", e.output.decode())
+            self.send_response(200)
+            self.end_headers()
+            self.wfile.write(b'Atualizado com sucesso')
+        else:
+            self.send_response(404)
+            self.end_headers()
+            self.wfile.write(b'Not Found')
 
 if __name__ == "__main__":
     server_address = ('', 3000)
