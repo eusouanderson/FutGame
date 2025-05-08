@@ -1,30 +1,45 @@
 import time
-from fastapi import FastAPI, Request, Response
 import subprocess
 import os
+from fastapi import FastAPI, Request, Response, BackgroundTasks
 
 app = FastAPI()
 
-@app.get("/")
-async def root():
-    return {"message": "Server is runing"}
+DEPLOY_SCRIPT = "/app/deploy.sh"  # ou o caminho para o seu script
 
-@app.post("/webhook")
-async def webhook(request: Request):
-    print("✅ Webhook recebido. Executando git pull...")
-
+def run_deploy():
     try:
-        output = subprocess.check_output(['git', '-C', os.getcwd(), 'pull'], stderr=subprocess.STDOUT)
+        # 1) git pull
+        output = subprocess.check_output(
+            ["git", "-C", os.getcwd(), "pull"],
+            stderr=subprocess.STDOUT
+        )
         print("📦 Git pull output:\n", output.decode())
 
-        print("⏳ Aguardando para garantir que as alterações sejam aplicadas...")
-        time.sleep(3)
+        # 2) docker-compose pull + up
+        # -- Assumindo que docker-compose.yml está em /app
+        dc_cmd = ["docker-compose", "-f", os.path.join(os.getcwd(), "docker-compose.yml"),
+                  "up", "-d", "--build"]
+        output = subprocess.check_output(dc_cmd, stderr=subprocess.STDOUT)
+        print("🐳 docker-compose output:\n", output.decode())
 
     except subprocess.CalledProcessError as e:
-        print("❌ Erro ao executar git pull:\n", e.output.decode())
-        return Response(content="Erro ao atualizar o código", status_code=500)
+        print("❌ Erro no deploy:\n", e.output.decode())
+        raise
     except Exception as e:
-        print("❌ Erro desconhecido:\n", str(e))
-        return Response(content="Erro desconhecido", status_code=500)
-    print("✅ Atualização concluída com sucesso.")
-    return Response(content="Atualização concluída com sucesso", status_code=200)
+        print("❌ Erro desconhecido no deploy:\n", str(e))
+        raise
+
+@app.get("/")
+async def root():
+    return {"message": "Server is running successfully!"}
+
+@app.post("/webhook")
+async def webhook(request: Request, background_tasks: BackgroundTasks):
+    print("✅ Webhook recebido. Iniciando atualização...")
+
+    # Enfileira o deploy em background
+    background_tasks.add_task(run_deploy)
+
+    # Responde imediatamente ao GitHub
+    return Response(content="Deploy agendado", status_code=202)

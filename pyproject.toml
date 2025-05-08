@@ -1,17 +1,16 @@
-[project]
+[tool.poetry]
 name = "futgame"
 version = "0.1.0"
 description = ""
-authors = [
-    {name = "Anderson",email = "eusouanderson@outlook.com"}
-]
+authors = ["Anderson <eusouanderson@outlook.com>"]
 readme = "README.md"
-requires-python = ">=3.11"
-dependencies = [
-    "uvicorn (>=0.34.2,<0.35.0)"
-]
+packages = [{ include = "api" }]
 
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.115.12"
+uvicorn = "^0.34.2"
 
 [build-system]
-requires = ["poetry-core>=2.0.0,<3.0.0"]
+requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
