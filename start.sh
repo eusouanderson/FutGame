@@ -7,11 +7,12 @@ echo "Entrando na pasta $APP_DIR"
 cd "$APP_DIR" || exit
 
 echo "Encerrando processos antigos..."
+# Mata processos que estão usando as portas 8000 e 3000
 fuser -k 8000/tcp
 fuser -k 3000/tcp
+# Mata o processo do webhook e ngrok, se estiverem em execução
 pkill -f webhook.py
 pkill ngrok
-
 
 # Inicia o servidor FastAPI
 echo "Iniciando o servidor FastAPI..."
@@ -30,8 +31,8 @@ poetry run python3 webhook.py &
 # Aguarda o webhook iniciar
 sleep 2
 
-# Inicia o ngrok com apenas um túnel para a porta 8000
+# Inicia o ngrok com apenas um túnel para a porta 8000 em segundo plano
 echo "Iniciando o ngrok..."
-ngrok http 8000
+ngrok http 8000 &
 
 echo "Todos os serviços foram iniciados."
