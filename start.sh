@@ -25,7 +25,7 @@ sleep 2
 cd ..
 
 # Inicia o webhook listener na porta 3000
-echo "Iniciando webhook listener na porta 3000..."
+echo "Iniciando webhook listener na porta 3000...."
 poetry run python3 webhook.py &
 
 # Aguarda o webhook iniciar
