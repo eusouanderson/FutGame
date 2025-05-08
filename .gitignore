@@ -9,7 +9,6 @@ __pycache__/
 poetry.lock
 
 restart.sh
-
 deploy.sh
 
 *.log
