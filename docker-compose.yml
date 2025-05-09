@@ -1,22 +1,38 @@
-version: "3.8"
-
 services:
+  mongo:
+    image: mongo:6.0
+    container_name: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
   backend:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: futgame-backend
     ports:
       - "8000:8000"
     volumes:
       - .:/app
       - /var/run/docker.sock:/var/run/docker.sock
     working_dir: /app
+    environment:
+      - ENVIRONMENT=production
+    depends_on:
+      - mongo
 
   frontend:
     build:
       context: .
       dockerfile: Dockerfile.frontend
+    container_name: futgame-frontend
     ports:
       - "8080:8080"
     depends_on:
       - backend
+
+volumes:
+  mongo-data:

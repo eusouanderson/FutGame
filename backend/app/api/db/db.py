@@ -12,7 +12,7 @@ jogadores_collection = None
 env = os.getenv("ENVIRONMENT", "development")
 
 if env == "production":
-    mongo_uri = "mongodb://localhost:27017"
+    mongo_uri = "mongodb://mongo:27017"
 else:
     mongo_uri = "mongodb://192.168.15.7:27017"
 
