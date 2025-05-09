@@ -33,3 +33,8 @@
 db.jogadores.deleteMany({})
 
 db.jogadores.find().pretty()
+
+docker-compose down --volumes --remove-orphans
+docker system prune -f
+docker-compose build --no-cahe
+docker-compose up

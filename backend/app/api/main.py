@@ -1,7 +1,8 @@
-from app.api.db.db import close_mongo_connection, connect_to_mongo
-from app.api.routes.jogador_routes import router as jogador_router
-from app.api.routes.webhook_routes import router as webhook_router
 from fastapi import FastAPI
+
+from backend.app.api.db.db import close_mongo_connection, connect_to_mongo
+from backend.app.api.routes.jogador_routes import router as jogador_router
+from backend.app.api.routes.webhook_routes import router as webhook_router
 
 app = FastAPI()
 

@@ -1,6 +1,7 @@
-from app.api.db.db import criar_jogador, listar_jogadores
-from app.api.schemas.jogador_schemas import Jogador
 from fastapi import APIRouter
+
+from backend.app.api.db.db import criar_jogador, listar_jogadores
+from backend.app.api.schemas.jogador_schemas import Jogador
 
 router = APIRouter()
 
