@@ -11,6 +11,6 @@ export default defineConfig({
     },
   },
   server: {
-    allowedHosts: ["all"],
+    allowedHosts: ["nearly-nice-beetle.ngrok-free.app"],
   },
 });
