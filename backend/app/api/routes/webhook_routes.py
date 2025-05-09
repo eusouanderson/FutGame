@@ -7,6 +7,7 @@ router = APIRouter()
 
 @router.post("/webhook")
 async def webhook(request: Request, background_tasks: BackgroundTasks):
+
     print("✅ Webhook recebido. Iniciando atualização...")
 
     background_tasks.add_task(run_deploy)
