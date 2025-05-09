@@ -1,7 +1,8 @@
-from fastapi import APIRouter, Request, BackgroundTasks, Response
 from app.api.webhook.deploy import run_deploy
+from fastapi import APIRouter, BackgroundTasks, Request, Response
 
 router = APIRouter()
+
 
 @router.post("/webhook")
 async def webhook(request: Request, background_tasks: BackgroundTasks):

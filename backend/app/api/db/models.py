@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 
+
 class Habilidades(BaseModel):
     força: int
     velocidade: int
@@ -9,6 +10,7 @@ class Habilidades(BaseModel):
     ataque: int
     defesa: int
     passe: int
+
 
 class Jogador(BaseModel):
     nome: str
