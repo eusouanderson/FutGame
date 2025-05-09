@@ -6,7 +6,6 @@ repos:
 
   - repo: https://github.com/pre-commit/mirrors-isort
     rev: v5.10.1
-
     hooks:
       - id: isort
 
@@ -14,3 +13,11 @@ repos:
     rev: v0.11.8
     hooks:
       - id: ruff
+
+  - repo: local
+    hooks:
+      - id: generate-requirements
+        name: Gerar requirements.txt
+        entry: poetry run pip freeze > requirements.txt
+        language: system
+        types: [python]

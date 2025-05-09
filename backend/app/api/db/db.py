@@ -1,3 +1,4 @@
+import os
 from typing import Dict
 
 from fastapi import FastAPI, HTTPException
@@ -8,11 +9,18 @@ client: AsyncIOMotorClient = None
 database = None
 jogadores_collection = None
 
+env = os.getenv("ENVIRONMENT", "development")
+
+if env == "production":
+    mongo_uri = "mongodb://localhost:27017"
+else:
+    mongo_uri = "mongodb://192.168.15.7:27017"
+
 
 async def connect_to_mongo():
     global client, database, jogadores_collection
     try:
-        uri = "mongodb://192.168.15.7:27017"
+        uri = mongo_uri
         print(f"Conectando ao MongoDB na URI: {uri}")
         client = AsyncIOMotorClient(uri)
 
